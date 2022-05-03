@@ -1,6 +1,6 @@
 from flask import Flask,render_template,request
 from keras.models import load_model
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 from keras import models
 import numpy as np
 from keras.preprocessing import image
@@ -8,7 +8,7 @@ import os
 app = Flask(__name__)
 classes={'Tomato___Bacterial_spot': 0, 'Tomato___Early_blight': 1, 'Tomato___Late_blight': 2, 'Tomato___Leaf_Mold': 3, 'Tomato___Septoria_leaf_spot': 4, 'Tomato___Spider_mites Two-spotted_spider_mite': 5, 'Tomato___Target_Spot': 6, 'Tomato___Tomato_Yellow_Leaf_Curl_Virus': 7, 'Tomato___Tomato_mosaic_virus': 8, 'Tomato___healthy': 9}
 BASE_DIR=os.getcwd()
-upload_folder=os.path.join(os.path.dirname(BASE_DIR),"tomato disease identifier/static")
+upload_folder='./static'
 def predict(img_loc):
 	model=load_model('my_model.h5')
 	model.compile(loss='categorical_crossentropy',
@@ -19,7 +19,7 @@ def predict(img_loc):
 	x=np.expand_dims(x,axis=0)
 	images=np.vstack([x])
 	for key,value in classes.items():
-	    if(value==model.predict_classes(images,batch_size=1)):
+	    if(value==model.predict(images,batch_size=1)):
 	        return key
 
 
